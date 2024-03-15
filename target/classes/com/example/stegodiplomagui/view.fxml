@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="445.0" style="-fx-background-color: #2e3348;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stegodiplomagui.Controller">
+   <children>
+      <AnchorPane layoutY="73.0" prefHeight="200.0" prefWidth="445.0" style="-fx-background-color: #fafafa;">
+         <children>
+            <Button fx:id="projectCopyrightButton" layoutX="97.0" layoutY="44.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="250.0" text="Защитить авторские права" />
+            <Button fx:id="checkAuthenticityButton" layoutX="97.0" layoutY="85.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="250.0" text="Проверить подлинность" />
+            <Button fx:id="searchButton" layoutX="97.0" layoutY="125.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="250.0" text="Поиск авторских прав" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="72.0" layoutY="14.0" text="Защита авторских прав" textFill="#fafafa">
+         <font>
+            <Font name="Century Gothic" size="25.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
