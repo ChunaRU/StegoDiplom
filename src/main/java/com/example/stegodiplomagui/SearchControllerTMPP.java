@@ -1,6 +1,6 @@
 package com.example.stegodiplomagui;
-import com.example.stegodiplomagui.Search.*;
 
+import com.example.stegodiplomagui.Search.GoogleSearch;
 import com.example.stegodiplomagui.digital_electronic_signature.DES;
 import com.example.stegodiplomagui.stego.Coding;
 import javafx.fxml.FXML;
@@ -22,7 +22,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SearchController {
+public class SearchControllerTMPP {
+
+    private final Coding coding = new Coding();
+    private final DES des = new DES();
 
     @FXML
     private TextField bookPath; // путь к файлу tmp
@@ -34,7 +37,7 @@ public class SearchController {
     private TextField desPath;
 
     @FXML
-    private Button checkWatermarkButton;
+    private Button embedButton;
 
     @FXML
     private TextField publicKeyPath;
@@ -49,14 +52,14 @@ public class SearchController {
 
 
 
-    public SearchController() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    public SearchControllerTMPP() throws NoSuchPaddingException, NoSuchAlgorithmException {
     }
 
     @FXML
     void initialize() {
-        checkWatermarkButton.setOnAction(event -> {
+        embedButton.setOnAction(event -> {
             try {
-                checkWatermark();
+                embedButtonAction();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -64,11 +67,7 @@ public class SearchController {
         });
 
         checkDesButton.setOnAction(event -> {
-            try {
-                Check.checkDesButtonAction(bookPath.getText().trim(), publicKeyPath.getText().trim(), desPath.getText().trim());
-            } catch (NoSuchPaddingException | NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            }
+            checkDesButtonAction(bookPath.getText().trim(), publicKeyPath.getText().trim(), desPath.getText().trim());
         });
 
     }
@@ -91,7 +90,7 @@ public class SearchController {
 
     }
 
-    private void checkWatermark() throws IOException {
+    private void embedButtonAction() throws IOException {
         int maxTest = 10;
 
         same();
@@ -103,7 +102,7 @@ public class SearchController {
             File fileDel = new File("d:/" + "tmp" + "." + format.getText());
             if(fileDel.exists()) {
                 System.out.println("DELETE");
-               GoogleSearch.delete(fileDel);
+                delete(fileDel);
             }
 
             testCounter++;
@@ -111,15 +110,15 @@ public class SearchController {
 
             System.out.print("Скачиваение файла" + "  --  ");
 
-                File file = GoogleSearch.download(s, format.getText());
+                File file = download(s, format.getText());
                 System.out.print("Проверка файла" + "  --  ");
 
-                if (Check.checkDigitalWatermark(file)) {
+                if (checkDigitalWatermark(file)) {
                     stolen.add(s);
                     System.err.print("Файл был украден"  + "  --  ");
                 }
                 System.out.println("Удаление.");
-               GoogleSearch.delete(file);
+                delete(file);
 
         }
 
@@ -131,7 +130,46 @@ public class SearchController {
         } else System.out.println("Отсутствуют");
     }
 
+    private void checkDesButtonAction(String bookPathFile, String publicKeyPathFile, String desPathFile) {
+        try {
+            des.checkDigitalElectronicSignature(bookPathFile, publicKeyPathFile, desPathFile);
+        } catch (IOException | NoSuchAlgorithmException | ClassNotFoundException | IllegalBlockSizeException |
+                 BadPaddingException | InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+
+
+
+    static File download(String strURL, String format) {
+        try {
+            URL url = new URL(strURL);
+            InputStream inputStream = url.openStream();
+            Files.copy(inputStream, new File("d:/" + "tmp" + "." + "doc").toPath());
+
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+        return new File("d:/" + "tmp" + "." + format);
+    }
+
+    static void delete(File file){
+        file.delete();
+    }
+    boolean checkDigitalWatermark(File file) throws IOException {
+        coding.decryption(file.getPath());
+
+
+        byte[] content1 = Files.readAllBytes(Paths.get("decryptionKey.txt"));
+        byte[] content2 = Files.readAllBytes(Paths.get("decryption.txt"));
+
+        if(Arrays.equals(content1, content2)){
+            return true;
+        }
+        return false;
+    }
 
 
 }

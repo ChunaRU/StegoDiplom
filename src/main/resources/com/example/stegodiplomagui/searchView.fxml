@@ -8,11 +8,11 @@
     <children>
         <AnchorPane layoutY="73.0" prefHeight="327.0" prefWidth="600.0" style="-fx-background-color: #fafafa;">
             <children>
-                <Button fx:id="embedButton" layoutX="380.0" layoutY="164.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Извлечь ЦВЗ" />
-                <Button fx:id="checkDesButton" layoutX="90.0" layoutY="164.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="185.0" text="Проверить подлинность ЦЭП" />
+                <Button fx:id="checkWatermarkButton" layoutX="380.0" layoutY="164.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Проверить ЦВЗ" />
+                <Button fx:id="checkDesButton" layoutX="90.0" layoutY="164.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="185.0" text="Проверить ЦЭП" />
             <TextField fx:id="publicKeyPath" layoutX="14.0" layoutY="238.0" prefHeight="25.0" prefWidth="337.0" promptText="Путь к файлу ключа" />
             <TextField fx:id="desPath" layoutX="14.0" layoutY="279.0" prefHeight="25.0" prefWidth="337.0" promptText="Путь к файлу ЦЭП" />
-            <TextField fx:id="search" layoutX="23.0" layoutY="39.0" prefHeight="32.0" prefWidth="160.0" promptText="Слово для поиска" />
+            <TextField id="111" fx:id="search" layoutX="23.0" layoutY="39.0" prefHeight="32.0" prefWidth="160.0" promptText="Слово для поиска" />
             <TextField fx:id="requiredSearch" layoutX="220.0" layoutY="39.0" prefHeight="32.0" prefWidth="160.0" promptText="Точная фраза" />
             <TextField fx:id="format" layoutX="413.0" layoutY="39.0" prefHeight="32.0" prefWidth="160.0" promptText="Формат" />
             </children>
