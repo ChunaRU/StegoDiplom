@@ -52,12 +52,8 @@ public class CheckAuthenticityController {
     }
 
     private void embedButtonAction(String bookPath) {
-        try {
-            System.out.println("ожидайте");
-            coding.decryption(bookPath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println("ожидайте");
+        coding.decryption(bookPath);
     }
 
     private void checkDesButtonAction(String bookPathFile, String publicKeyPathFile, String desPathFile) {

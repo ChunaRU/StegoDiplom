@@ -1,5 +1,6 @@
 package com.example.stegodiplomagui.Search;
 
+import com.example.stegodiplomagui.Constant;
 import com.example.stegodiplomagui.digital_electronic_signature.DES;
 import com.example.stegodiplomagui.stego.Coding;
 import org.jsoup.Jsoup;
@@ -30,7 +31,13 @@ public class GoogleSearch {
         out.println("Поисковое слово: " + search);
         out.println("Формат: " + format);
         String url = "https://www.google.com/search?q=" + search + "+filetype%3A" + format + "&sca_esv=583632294&sxsrf=AM9HkKn4HPwoEJjgyCAJyeZFYoKiftbt5g%3A1700320594520&ei=UtVYZZqtH_TQi-gP5YG-wA8&ved=0ahUKEwianqno682CAxV06AIHHeWAD_gQ4dUDCBA&uact=5&oq=%D1%83%D0%BC%D0%BA+filetype%3A%D0%94%D0%9E%D0%9A&gs_lp=Egxnd3Mtd2l6LXNlcnAiFtGD0LzQuiBmaWxldHlwZTrQlNCe0JpIi0xQqg9YyUZwCXgAkAEAmAGHCKAByBKqAQkwLjMuNC43LTG4AQPIAQD4AQHCAgQQIxgn4gMEGAEgQYgGAQ&sclient=gws-wiz-serp";
-
+        out.println();
+        out.println();
+        out.println();
+        out.println(url);;
+        out.println();
+        out.println();
+        out.println();
         int num;
         int step = 1;
         int trash = 7;
@@ -68,14 +75,14 @@ public class GoogleSearch {
         try {
             URL url = new URL(strURL);
             InputStream inputStream = url.openStream();
-            Files.copy(inputStream, new File("tmp" + "." + "doc").toPath());
+            Files.copy(inputStream, new File(Constant.getTmpFilePath() + "tmp." + format).toPath());
 
         } catch (IOException ex) {
             err.println(ex.getMessage());
             out.println();
         }
 
-        return new File( "tmp" + "." + format);
+        return new File( Constant.getTmpFilePath() + "tmp." + format);
     }
 
     public static void delete(File file){

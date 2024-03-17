@@ -111,7 +111,7 @@ public class Coding {
                 "_____________________________________");
     }
 
-    public void decryption(String zipFilePath) throws IOException {
+    public void decryption(String zipFilePath) {
 
         System.out.println("Идет процесс извлечения цифрового водяного знака...");
 
@@ -120,7 +120,12 @@ public class Coding {
 
         for (String imagePath : imagePaths) {
 
-            BufferedImage image = readImageInZip(zipFilePath, imagePath);
+            BufferedImage image = null;
+            try {
+                image = readImageInZip(zipFilePath, imagePath);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
 
             int imageHeight = image.getHeight();
             int imageWidth = image.getWidth();
@@ -152,7 +157,11 @@ public class Coding {
 
             byte[] byteArray = byteTransform.bitsArrayToByteArray(bitsStringArray);
 
-            byteTransform.byteArrayToFile(byteArray, "decryption.txt");
+            try {
+                byteTransform.byteArrayToFile(byteArray, "decryption.txt");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
         }
         System.out.println(

@@ -18,9 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class SearchController {
 
@@ -64,11 +62,13 @@ public class SearchController {
         });
 
         checkDesButton.setOnAction(event -> {
-            try {
-                Check.checkDesButtonAction(bookPath.getText().trim(), publicKeyPath.getText().trim(), desPath.getText().trim());
-            } catch (NoSuchPaddingException | NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            }
+            if(bookPath != null && publicKeyPath != null && desPath != null) {
+                try {
+                    Check.checkDesButtonAction(bookPath.getText().trim(), publicKeyPath.getText().trim(), desPath.getText().trim());
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
+            } else System.err.println("Пустые значения");
         });
 
     }
@@ -92,24 +92,24 @@ public class SearchController {
     }
 
     private void checkWatermark() throws IOException {
-        int maxTest = 10;
+        if (!Objects.equals(search.getText(), "") && !Objects.equals(format.getText(), "")) {
+            int maxTest = 10;
+            same();
 
-        same();
-        System.out.println("ожидайте");
 
-        int testCounter = 0; //счетчик для тестов
-        for (String s : linkList) {
+            int testCounter = 0; //счетчик для тестов
+            for (String s : linkList) {
 
-            File fileDel = new File("d:/" + "tmp" + "." + format.getText());
-            if(fileDel.exists()) {
-                System.out.println("DELETE");
-               GoogleSearch.delete(fileDel);
-            }
+                File fileDel = new File("tmp" + "." + format.getText());
+                if(fileDel.exists()) {
+                    System.out.println("DELETE");
+                    GoogleSearch.delete(fileDel);
+                }
 
-            testCounter++;
-            if(testCounter > maxTest) break;
+                testCounter++;
+                if(testCounter > maxTest) break;
 
-            System.out.print("Скачиваение файла" + "  --  ");
+                System.out.print("Скачиваение файла" + "  --  ");
 
                 File file = GoogleSearch.download(s, format.getText());
                 System.out.print("Проверка файла" + "  --  ");
@@ -119,16 +119,19 @@ public class SearchController {
                     System.err.print("Файл был украден"  + "  --  ");
                 }
                 System.out.println("Удаление.");
-               GoogleSearch.delete(file);
+                GoogleSearch.delete(file);
 
-        }
-
-        System.out.println("Украденые файлы: ");
-        if(stolen.size() != 0){
-            for (String s : stolen) {
-                System.out.println(s);
             }
-        } else System.out.println("Отсутствуют");
+
+            System.out.println("Украденые файлы: ");
+            if(stolen.size() != 0){
+                for (String s : stolen) {
+                    System.out.println(s);
+                }
+            } else System.out.println("Отсутствуют");
+        } else System.err.println("Введите данные для поиска");
+
+
     }
 
 
