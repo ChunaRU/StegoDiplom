@@ -1,0 +1,1 @@
+Заходим в Project Structure -> Libraries -> добавляем jsoup-1.16.1.jar
