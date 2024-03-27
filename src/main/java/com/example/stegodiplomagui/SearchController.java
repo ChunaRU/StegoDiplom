@@ -1,29 +1,13 @@
 package com.example.stegodiplomagui;
 import com.example.stegodiplomagui.Search.*;
-
-import com.example.stegodiplomagui.digital_electronic_signature.DES;
-import com.example.stegodiplomagui.stego.Coding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
 
 public class SearchController {
-
-    @FXML
-    private TextField bookPath; // путь к файлу tmp
 
     @FXML
     private Button checkDesButton;
@@ -47,25 +31,25 @@ public class SearchController {
 
 
 
-    public SearchController() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    public SearchController() {
     }
 
     @FXML
     void initialize() {
         checkWatermarkButton.setOnAction(event -> {
             try {
-                checkWatermark();
-            } catch (IOException e) {
+               Check.check(search,format,requiredSearch,null,null);
+            } catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException e) {
                 throw new RuntimeException(e);
             }
 
         });
 
         checkDesButton.setOnAction(event -> {
-            if(bookPath != null && publicKeyPath != null && desPath != null) {
+            if(publicKeyPath != null && desPath != null) {
                 try {
-                    Check.checkDesButtonAction(bookPath.getText().trim(), publicKeyPath.getText().trim(), desPath.getText().trim());
-                } catch (NoSuchPaddingException | NoSuchAlgorithmException e) {
+                    Check.check(search,format,requiredSearch, publicKeyPath.getText().trim(), desPath.getText().trim());
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException | IOException e) {
                     throw new RuntimeException(e);
                 }
             } else System.err.println("Пустые значения");
@@ -73,66 +57,9 @@ public class SearchController {
 
     }
 
-    List<String> linkList;
-    List<String> stolen = new ArrayList<>();;
-    private void same(){
-        if(search.getText() == null || format.getText() == null)
-            System.err.println("Некоркетные данные");
-
-        try {
-            linkList = GoogleSearch.getLinks(search.getText(),requiredSearch.getText(),format.getText());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
 
 
-            throw new RuntimeException(e);
-        }
 
-
-    }
-
-    private void checkWatermark() throws IOException {
-        if (!Objects.equals(search.getText(), "") && !Objects.equals(format.getText(), "")) {
-            int maxTest = 10;
-            same();
-
-
-            int testCounter = 0; //счетчик для тестов
-            for (String s : linkList) {
-
-                File fileDel = new File("tmp" + "." + format.getText());
-                if(fileDel.exists()) {
-                    System.out.println("DELETE");
-                    GoogleSearch.delete(fileDel);
-                }
-
-                testCounter++;
-                if(testCounter > maxTest) break;
-
-                System.out.print("Скачиваение файла" + "  --  ");
-
-                File file = GoogleSearch.download(s, format.getText());
-                System.out.print("Проверка файла" + "  --  ");
-
-                if (Check.checkDigitalWatermark(file)) {
-                    stolen.add(s);
-                    System.err.print("Файл был украден"  + "  --  ");
-                }
-                System.out.println("Удаление.");
-                GoogleSearch.delete(file);
-
-            }
-
-            System.out.println("Украденые файлы: ");
-            if(stolen.size() != 0){
-                for (String s : stolen) {
-                    System.out.println(s);
-                }
-            } else System.out.println("Отсутствуют");
-        } else System.err.println("Введите данные для поиска");
-
-
-    }
 
 
 

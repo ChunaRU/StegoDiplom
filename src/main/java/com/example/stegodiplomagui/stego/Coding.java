@@ -6,6 +6,7 @@ import com.example.stegodiplomagui.stego.wavelet.WaveletTransform;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -111,7 +112,7 @@ public class Coding {
                 "_____________________________________");
     }
 
-    public void decryption(String zipFilePath) {
+    public String decryption(String zipFilePath) throws UnsupportedEncodingException {
 
         System.out.println("Идет процесс извлечения цифрового водяного знака...");
 
@@ -163,9 +164,11 @@ public class Coding {
                 throw new RuntimeException(e);
             }
 
+            return new String(byteArray, "UTF-8");
         }
         System.out.println(
                 "Цифвровой водяной знак успешно извлечен!" + "\n" +
                 "_______________________________________");
+        return zipFilePath;
     }
 }

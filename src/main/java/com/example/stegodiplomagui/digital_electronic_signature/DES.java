@@ -33,16 +33,21 @@ public class DES {
                 "____________________________________________");
     }
 
-    public void checkDigitalElectronicSignature(String filePath, String publicKeyPath, String desPath) throws IOException, NoSuchAlgorithmException, ClassNotFoundException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+    public boolean checkDigitalElectronicSignature(String filePath, String publicKeyPath, String desPath) throws IOException, NoSuchAlgorithmException, ClassNotFoundException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
         String desHash = decrypt.decryptDES(objectInput.inputDES(desPath), objectInput.inputPublicKey(publicKeyPath));
         String fileHash = SHA256.hash(getBytes(filePath));
-        if (desHash.equals(fileHash))
+        if (desHash.equals(fileHash)){
             System.out.println(
-                            "Электронное учебное пособие является подлинным" + "\n" +
+                    "Электронное учебное пособие является подлинным" + "\n" +
                             "______________________________________________");
-        else System.out.println(
-                "Электронное учебное пособие не является подлинным" + "\n" +
-                "_________________________________________________");
+            return true;
+        }
+        else {
+            System.out.println(
+                    "Электронное учебное пособие не является подлинным" + "\n" +
+                            "_________________________________________________");
+            return false;
+        }
     }
 
     private String des(String filePath, Key privateKey) throws IOException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {

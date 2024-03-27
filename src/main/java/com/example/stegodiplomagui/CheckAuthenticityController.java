@@ -10,6 +10,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -42,7 +43,11 @@ public class CheckAuthenticityController {
     @FXML
     void initialize() {
         embedButton.setOnAction(event -> {
-            embedButtonAction(filePath1.getText());
+            try {
+                embedButtonAction(filePath1.getText());
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         checkDesButton.setOnAction(event -> {
@@ -51,7 +56,7 @@ public class CheckAuthenticityController {
 
     }
 
-    private void embedButtonAction(String bookPath) {
+    private void embedButtonAction(String bookPath) throws UnsupportedEncodingException {
         System.out.println("ожидайте");
         coding.decryption(bookPath);
     }
